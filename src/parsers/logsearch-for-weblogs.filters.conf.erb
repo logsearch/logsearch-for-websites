@@ -1,0 +1,7 @@
+if [@type] in ["syslog", "relp"] {
+<%= File.read('src/parsers/snippets/syslog_standard-with-hoisting.conf').gsub(/^/, '  ') %>
+}
+
+if [@type] == "nginx_combined" {
+<%= File.read('src/parsers/snippets/nginx_combined.conf').gsub(/^/, '  ') %>
+}
