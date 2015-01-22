@@ -42,7 +42,7 @@ output {
     rfc => "rfc5424"
     facility => "user-level"
     severity => "informational"
-    structured_data => "@type=%{[@type]}"
+    structured_data => "LOGSTASH@42 @type=%{[@type]}"
   }
 }
 END
