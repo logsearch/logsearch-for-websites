@@ -5,7 +5,7 @@ if [ ! -d $SCRIPT_DIR/../vendor/addon-common ]; then
   echo "Installing vendor/addon-common ..."
 
   mkdir -p $SCRIPT_DIR/../vendor/addon-common
-  curl -L https://github.com/logsearch/logsearch-filters-common/archive/use-workspace-logstash-if-exists.tar.gz | tar -xzf- --strip-components 1 -C $SCRIPT_DIR/../vendor/addon-common
+  curl -L https://github.com/logsearch/logsearch-filters-common/archive/29eb050c37fafd6c0f3392baa786c5da14a46e7b.zip | tar -xzf- --strip-components 1 -C $SCRIPT_DIR/../vendor/addon-common
 
 fi
 
