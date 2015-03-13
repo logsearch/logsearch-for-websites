@@ -1,12 +1,12 @@
-require 'test_utils'
+# encoding: utf-8
+require "logstash/devutils/rspec/spec_helper"
 require 'logstash/filters/grok'
 
 describe 'All logsearch-for-weblogs parsers' do
-  extend LogStash::RSpec
    
   config <<-CONFIG
     filter {
-      #{File.read('target/logsearch-for-weblogs.filters.conf')}
+      #{File.read('target/logstash-filters-default.conf')}
     }
   CONFIG
 

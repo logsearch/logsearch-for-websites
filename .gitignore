@@ -34,5 +34,4 @@ build/
 .rvmrc
 
 vendor/
-target/
 .sincedb*
