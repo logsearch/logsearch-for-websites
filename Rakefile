@@ -1,22 +1,26 @@
+require 'erb'
+
 task :clean do
-  rm_rf "target"
-  mkdir "target"
+  mkdir_p "target"
+  rm_rf "target/*"
 end
 
-desc "Builds filters"
+desc "Builds filters & dashboards"
 task :build => :clean do
-	puts "===> Building ..."
-	mkdir_p 'target/kibana-dashboards'
-	sh "vendor/addon-common/bin/build.sh src/parsers/logsearch-for-weblogs.filters.conf.erb > target/logsearch-for-weblogs.filters.conf"
-	sh "vendor/addon-common/bin/build.sh src/kibana-dashboards/Geo-IP.json > target/kibana-dashboards/Geo-IP.json"
-	puts "===> Artifacts:"
-	puts `tree target`
+  puts "===> Building ..."
+  compile_erb 'src/logstash-filters/default.conf.erb', 'target/logstash-filters-default.conf'
+
+  mkdir_p 'target/kibana-dashboards'
+  compile_erb 'src/kibana-dashboards/Geo-IP.json', 'target/kibana-dashboards/Geo-IP.json'
+
+  puts "===> Artifacts:"
+  puts `tree target`
 end
 
-desc "Runs tests against filters"
+desc "Runs unit tests against filters & dashboards"
 task :test => :build do
-	puts "===> Testing ..."
-	sh "vendor/addon-common/bin/test.sh"
+  puts "===> Testing ..."
+  sh %Q[ JAVA_OPTS="$JAVA_OPTS -XX:+TieredCompilation -XX:TieredStopAtLevel=1" vendor/logstash/bin/logstash rspec $(find test -name *spec.rb) ]
 end
 
 desc "Loads sample Nginx data (from logsearch.io)"
@@ -50,4 +54,13 @@ END
   TODAY="#{Time.now.strftime('%d/%b/%Y')}"
   REPLACE_DATE_WITH_TODAY="sed -e 's/19\\/Jan\\/2015/#{TODAY.gsub('/','\/')}/g'"
   sh %Q[curl -s #{SAMPLE_DATA_URL} | tar xzO | #{REPLACE_DATE_WITH_TODAY} | vendor/logstash/bin/logstash agent -v -e '#{CONFIG_STRING}']
+end
+
+def compile_erb(source_file, dest_file)
+  if File.extname(source_file) == '.erb'
+    output = ERB.new(File.read(source_file)).result(binding)
+    File.write(dest_file, output)
+  else
+    cp source_file, dest_file
+  end
 end
