@@ -24,7 +24,7 @@ describe 'All logsearch-for-weblogs parsers' do
       insist { subject['http_user_agent'] } == '"Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_5) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/39.0.2171.95 Safari/537.36"'
     end
 
-  end #context: nginx_combined log over syslog
+  end #context: nginx_combined 
 
   context 'apache_combined' do
     sample('@type'=>'apache_combined', "@message" => '192.168.0.39 - - [31/Jul/2014:07:25:53 -0500] "GET /spread-betting/wp-includes/js/jquery/jquery.js?ver=1.11.0 HTTP/1.1" 200 96402 "http://origin-www.cityindex.co.uk/spread-betting/" "GomezAgent 2.0"') do
